@@ -157,6 +157,7 @@
     <None Include="textures\keys\RESTART_ACTIVE.png" />
     <None Include="textures\keys\RESTART_PRESSED.png" />
     <Content Include="textures\keys\S.png" />
+    <None Include="textures\keys\SPACE.png" />
     <Content Include="textures\keys\T.png" />
     <Content Include="textures\keys\U.png" />
     <Content Include="textures\keys\V.png" />

@@ -267,12 +267,16 @@ namespace KeyboardSagaGame
                 (float)(coordinates.Y + game.PlayerTower.Coordinates.Y),
                 new Rectangle(new Point(game.PlayerTower.Frame * game.PlayerTower.ImgInfo.ImgWidth, 0),
                 new Size(game.PlayerTower.ImgInfo.ImgWidth, game.PlayerTower.ImgInfo.ImgHeight)), GraphicsUnit.Pixel);
-            e.Graphics.DrawImage(game.PlayerTower.HealImage,
-                (float)(coordinates.X + game.PlayerTower.Coordinates.X - game.PlayerTower.ImgInfo.ImgWidth / 2 - game.PlayerTower.HealImgInfo.ImgWidth - 15),
-                (float)(coordinates.Y + game.PlayerTower.Coordinates.Y + game.PlayerTower.ImgInfo.ImgHeight / 2),
+            var healCoordinates = new PointF((float)(coordinates.X + game.PlayerTower.Coordinates.X - game.PlayerTower.ImgInfo.ImgWidth / 2 - game.PlayerTower.HealImgInfo.ImgWidth - 15),
+                (float)(coordinates.Y + game.PlayerTower.Coordinates.Y + game.PlayerTower.ImgInfo.ImgHeight / 2));
+            e.Graphics.DrawImage(game.PlayerTower.HealImage, healCoordinates.X, healCoordinates.Y,
                 new RectangleF(new PointF(game.PlayerTower.HealImgInfo.ImgWidth * game.PlayerTower.HealFrame, 0),
-                    new Size(game.PlayerTower.HealImgInfo.ImgWidth, game.PlayerTower.HealImgInfo.ImgHeight)), 
+                    new Size(game.PlayerTower.HealImgInfo.ImgWidth, game.PlayerTower.HealImgInfo.ImgHeight)),
                 GraphicsUnit.Pixel);
+            if(game.PlayerTower.HealFrame == 7)
+                e.Graphics.DrawImage(game.KeysImages[Keys.Space],
+                    healCoordinates.X + 7, healCoordinates.Y + game.PlayerTower.HealImgInfo.ImgHeight + 22,
+                    game.KeysImages[Keys.Space].Width, game.KeysImages[Keys.Space].Height);
             e.Graphics.DrawImage(game.PlayerTower.HealthImage,
                 (float)(coordinates.X + game.PlayerTower.Coordinates.X - game.PlayerTower.HealthImage.Width / 2 + 14),
                 (float)(coordinates.Y + game.PlayerTower.Coordinates.Y + game.PlayerTower.ImgInfo.ImgHeight + 65),

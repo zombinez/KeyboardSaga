@@ -76,8 +76,6 @@ namespace KeyboardSagaGame.Classes
 
     public static class GameMethods
     {
-        private readonly static ResourceManager RM = 
-            new ResourceManager("KeyboardSagaGame.Properties.Resources", typeof(Properties.Resources).Assembly);
 
         public static List<Monster> CreateRandomMonstersAsync(this Game game, int monstersAmount)
         {
@@ -100,7 +98,7 @@ namespace KeyboardSagaGame.Classes
             return monstersList;
         }
 
-        public static Image GetImageByName(string name) => (Image)RM.GetObject(name);
+        public static Image GetImageByName(string name) => (Image)Properties.Resources.ResourceManager.GetObject(name);
 
         public static Dictionary<EntityType, Image> GetSpriteSheets() =>
             new Dictionary<EntityType, Image>
@@ -119,6 +117,7 @@ namespace KeyboardSagaGame.Classes
             {
                 keys[(Keys)i] = GetImageByName(((Keys)i).ToString());
             }
+            keys[Keys.Space] = Properties.Resources.SPACE;
             return keys;
         }
     }
