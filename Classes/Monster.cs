@@ -5,18 +5,18 @@ namespace KeyboardSagaGame.Classes
 {
     public class Monster
     {
-        public readonly ImageInfo ImgInfo;
-        public readonly EntityType Type;
-        public readonly double RequiredDistance;
+        private int keysCount;
         public Vector Coordinates { get; private set; }
         public Keys CurrentKeyToPress;
         public MonsterCycles Cycles { get; private set; }
         public MonsterAction CurrentAction { get; private set; }
         public int Frame { get; private set; }
         public bool IsDead => keysCount == 0;
+        public readonly ImageInfo ImgInfo;
+        public readonly EntityType Type;
+        public readonly double RequiredDistance;
         private readonly double speed;
         private readonly int strength;
-        private int keysCount;
         private readonly Action<Game> attackAction;
 
         public Monster(EntityType monsterType, Vector coordinates, Game game)

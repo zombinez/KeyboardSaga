@@ -10,16 +10,16 @@ namespace KeyboardSagaGame.Classes
 {
     public class Game
     {
-        public readonly Dictionary<EntityType, Image> SpriteSheets;
-        public readonly Dictionary<Keys, Image> KeysImages;
-        public readonly Image MapImage;
-        public readonly Vector[] GateCoordinates;
         public Tower PlayerTower { get; private set; }
         public List<Monster> Monsters { get; private set; }
         public int CurrentWave { get; private set; }
         public bool IsGameFinished { get; private set; }
         public Random Randomizer { get; private set; }
         public Queue<Monster> MonsterToAdd { get; private set; }
+        public readonly Dictionary<EntityType, Image> SpriteSheets;
+        public readonly Dictionary<Keys, Image> KeysImages;
+        public readonly Image MapImage;
+        public readonly Vector[] GateCoordinates;
 
         public Game()
         {
@@ -71,12 +71,10 @@ namespace KeyboardSagaGame.Classes
             IsGameFinished = false;
             MonsterToAdd = new Queue<Monster>();
         }
-
     }
 
     public static class GameMethods
     {
-
         public static List<Monster> CreateRandomMonstersAsync(this Game game, int monstersAmount)
         {
             var monstersList = new List<Monster>();

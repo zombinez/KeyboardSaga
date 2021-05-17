@@ -4,20 +4,15 @@ namespace KeyboardSagaGame.Classes
 {
     public class Vector
 	{
+		public double Length { get { return Math.Sqrt(X * X + Y * Y); } }
+		public double Angle { get { return Math.Atan2(Y, X); } }
+		public readonly double X;
+		public readonly double Y;
+
 		public Vector(double x, double y)
 		{
 			X = x;
 			Y = y;
-		}
-
-		public readonly double X;
-		public readonly double Y;
-		public double Length { get { return Math.Sqrt(X * X + Y * Y); } }
-		public double Angle { get { return Math.Atan2(Y, X); } }
-
-		public override string ToString()
-		{
-			return string.Format("X: {0}, Y: {1}", X, Y);
 		}
 
 		protected bool Equals(Vector other)

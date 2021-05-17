@@ -12,12 +12,12 @@ namespace KeyboardSagaGame
 {
     public partial class KeyboardSaga : Form
     {
-        private Menu menuForm;
         private Image mapImage;
         private bool pauseGame;
         private Vector coordinates;
         private int animationCycles;
         private int gameOverCycles;
+        private readonly Menu menuForm;
         private readonly Game game;
         private readonly WindowsMediaPlayer healRechargeSound;
         private readonly WindowsMediaPlayer healSound;
@@ -233,7 +233,7 @@ namespace KeyboardSagaGame
             {
                 if (gameOverCycles == 60)
                     gameOverCycles = 0;
-                gameOverCycles++;
+                else gameOverCycles++;
             }
         }
 

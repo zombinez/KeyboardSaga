@@ -7,9 +7,6 @@ namespace KeyboardSagaGame.Classes
 {
     public class Tower
     {
-        public readonly ImageInfo ImgInfo;
-        public readonly ImageInfo HealImgInfo;
-        public readonly Vector Coordinates;
         public int Frame { get; private set; }
         public int HealthAmount { get; private set; }
         public Image HealthImage { get; private set;}
@@ -18,6 +15,9 @@ namespace KeyboardSagaGame.Classes
         public int Cycles { get; private set; }
         public bool HealRecharged { get; private set; }
         public bool LostHealth { get; private set; }
+        public readonly ImageInfo ImgInfo;
+        public readonly ImageInfo HealImgInfo;
+        public readonly Vector Coordinates;
 
         public Tower(double x, double y)
         {
