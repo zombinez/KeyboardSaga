@@ -14,13 +14,15 @@ namespace KeyboardSagaGame
     {
         private Menu menuForm;
         private Image mapImage;
-        private readonly Game game;
         private bool pauseGame;
         private Vector coordinates;
         private int animationCycles;
+        private int gameOverCycles;
+        private readonly Game game;
         private readonly WindowsMediaPlayer healRechargeSound;
         private readonly WindowsMediaPlayer healSound;
         private readonly WindowsMediaPlayer hitSound;
+        private readonly Font gameOverFont;
 
         public KeyboardSaga(Menu menuF)
         {
@@ -28,9 +30,11 @@ namespace KeyboardSagaGame
             InitializeComponent();
             Icon = Properties.Resources.logo;
             animationCycles = 0;
+            gameOverCycles = 0;
             mapImage = GameMethods.GetImageByName("0_");
             menuForm = menuF;
             Font = new Font(menuForm.PFC.Families[0], 20F);
+            gameOverFont = new Font(menuForm.PFC.Families[0], 40F);
             game = new Game();
             pauseGame = false;
             #region Sounds Initialization
@@ -120,7 +124,9 @@ namespace KeyboardSagaGame
                 menuForm.PlayClickSound();
                 game.Reset();
                 animationCycles = 0;
+                gameOverCycles = 0;
                 mapImage = GameMethods.GetImageByName("0_");
+                PausePress();
             });
             restart.MouseEnter += new EventHandler((sender, args) => 
                 restart.Image = GameMethods.GetImageByName("RESTART_ACTIVE"));
@@ -162,15 +168,7 @@ namespace KeyboardSagaGame
         {
             if (e.KeyCode == Keys.Escape)
             {
-                menuForm.PlayClickSound();
-                pauseGame = !pauseGame;
-                if (pauseGame)
-                    pause.Image = GameMethods.GetImageByName("PAUSE_PRESSED_ACTIVE");
-                else pause.Image = GameMethods.GetImageByName("PAUSE");
-                restart.Enabled = !restart.Enabled;
-                restart.Visible = !restart.Visible;
-                menu.Enabled = !menu.Enabled;
-                menu.Visible = !menu.Visible;
+                PausePress();
             }
             else if (e.KeyCode == Keys.Space && !game.IsGameFinished && game.PlayerTower.HealFrame == 7)
             {
@@ -223,6 +221,20 @@ namespace KeyboardSagaGame
             e.Graphics.DrawString(wavesAmountToShow, Font, new SolidBrush(Color.AliceBlue),
                 (int)(pause.Location.X - (Font.Size * 5 / 4) * (wavesAmountToShow.Length + 1)),
                 (int)(pause.Location.Y + (pause.Image.Height - Font.Height) / 2));
+            if (game.IsGameFinished && gameOverCycles > 30 && gameOverCycles < 60)
+            {
+                e.Graphics.DrawString("GAME OVER", gameOverFont, new SolidBrush(Color.AliceBlue),
+                    (int)(coordinates.X + (1280 - (gameOverFont.Size * 5 / 4) * ("GAME OVER".Length + 1)) / 2 + 10),
+                    (int)(coordinates.Y + (720 - gameOverFont.Height) / 2));
+                if(!pauseGame)
+                    gameOverCycles++;
+            }
+            else if (game.IsGameFinished && !pauseGame)
+            {
+                if (gameOverCycles == 60)
+                    gameOverCycles = 0;
+                gameOverCycles++;
+            }
         }
 
         private void DrawMap(PaintEventArgs e)
@@ -296,6 +308,18 @@ namespace KeyboardSagaGame
                 (float)(coordinates.Y + monster.Coordinates.Y), new Rectangle(
                 new Point(monster.Frame * monster.ImgInfo.ImgWidth, (int)monster.CurrentAction * monster.ImgInfo.ImgHeight),
                 new Size(monster.ImgInfo.ImgWidth, monster.ImgInfo.ImgHeight)), GraphicsUnit.Pixel);
+        }
+
+        private void PausePress()
+        {
+            pauseGame = !pauseGame;
+            if (pauseGame)
+                pause.Image = GameMethods.GetImageByName("PAUSE_PRESSED_ACTIVE");
+            else pause.Image = GameMethods.GetImageByName("PAUSE");
+            restart.Enabled = !restart.Enabled;
+            restart.Visible = !restart.Visible;
+            menu.Enabled = !menu.Enabled;
+            menu.Visible = !menu.Visible;
         }
     }
 }
