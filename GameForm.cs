@@ -14,6 +14,7 @@ namespace KeyboardSagaGame
     {
         private Image mapImage;
         private bool pauseGame;
+        private bool gameOverSoundPlayed;
         private Vector coordinates;
         private int animationCycles;
         private int gameOverCycles;
@@ -22,6 +23,7 @@ namespace KeyboardSagaGame
         private readonly WindowsMediaPlayer healRechargeSound;
         private readonly WindowsMediaPlayer healSound;
         private readonly WindowsMediaPlayer hitSound;
+        private readonly WindowsMediaPlayer gameOverSound;
         private readonly Font gameOverFont;
 
         public KeyboardSaga(Menu menuF)
@@ -37,6 +39,7 @@ namespace KeyboardSagaGame
             gameOverFont = new Font(menuForm.PFC.Families[0], 40F);
             game = new Game();
             pauseGame = false;
+            gameOverSoundPlayed = false;
             #region Sounds Initialization
             var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             healRechargeSound = new WindowsMediaPlayer();
@@ -51,6 +54,10 @@ namespace KeyboardSagaGame
             hitSound.URL = Path.Combine(currentDirectory, @"sounds\hit.wav");
             hitSound.settings.volume = 10;
             hitSound.controls.stop();
+            gameOverSound = new WindowsMediaPlayer();
+            gameOverSound.URL = Path.Combine(currentDirectory, @"sounds\game_over.wav");
+            gameOverSound.settings.volume = 100;
+            gameOverSound.controls.stop();
             #endregion
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -125,6 +132,8 @@ namespace KeyboardSagaGame
                 game.Reset();
                 animationCycles = 0;
                 gameOverCycles = 0;
+                gameOverSound.controls.stop();
+                gameOverSoundPlayed = false;
                 mapImage = GameMethods.GetImageByName("0_");
                 PausePress();
             });
@@ -201,6 +210,11 @@ namespace KeyboardSagaGame
                         monster.GetKilled();
                     monster.Act(game);
                 }
+            }
+            if(game.IsGameFinished && menuForm.SoundOn && !gameOverSoundPlayed)
+            {
+                gameOverSound.controls.play();
+                gameOverSoundPlayed = true;
             }
             Invalidate();
             if (menuForm.Enabled)
@@ -285,7 +299,7 @@ namespace KeyboardSagaGame
                 new RectangleF(new PointF(game.PlayerTower.HealImgInfo.ImgWidth * game.PlayerTower.HealFrame, 0),
                     new Size(game.PlayerTower.HealImgInfo.ImgWidth, game.PlayerTower.HealImgInfo.ImgHeight)),
                 GraphicsUnit.Pixel);
-            if(game.PlayerTower.HealFrame == 7)
+            if(game.PlayerTower.HealFrame == 7 && !pauseGame)
                 e.Graphics.DrawImage(game.KeysImages[Keys.Space],
                     healCoordinates.X + 7, healCoordinates.Y + game.PlayerTower.HealImgInfo.ImgHeight + 22,
                     game.KeysImages[Keys.Space].Width, game.KeysImages[Keys.Space].Height);

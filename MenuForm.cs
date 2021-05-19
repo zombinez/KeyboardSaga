@@ -33,12 +33,10 @@ namespace KeyboardSagaGame
             FileInitialize(musicFile, Properties.Resources.music);
             string clickSoundFile = Path.Combine(currentDirectory, @"sounds\click.wav");
             FileInitialize(clickSoundFile, Properties.Resources.menu_select);
-            string healSoundFile = Path.Combine(currentDirectory, @"sounds\heal.wav");
-            FileInitialize(healSoundFile, Properties.Resources.heal);
-            string healRechargeSoundFile = Path.Combine(currentDirectory, @"sounds\heal_recharge.wav");
-            FileInitialize(healRechargeSoundFile, Properties.Resources.heal_recharge);
-            string hitSound = Path.Combine(currentDirectory, @"sounds\hit.wav");
-            FileInitialize(hitSound, Properties.Resources.hit);
+            FileInitialize(Path.Combine(currentDirectory, @"sounds\heal.wav"), Properties.Resources.heal);
+            FileInitialize(Path.Combine(currentDirectory, @"sounds\heal_recharge.wav"), Properties.Resources.heal_recharge);
+            FileInitialize(Path.Combine(currentDirectory, @"sounds\hit.wav"), Properties.Resources.hit);
+            FileInitialize(Path.Combine(currentDirectory, @"sounds\game_over.wav"), Properties.Resources.game_over);
             //Music Player Creation
             music = new WindowsMediaPlayer();
             music.URL = musicFile;

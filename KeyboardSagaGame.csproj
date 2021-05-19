@@ -117,6 +117,7 @@
     <None Include="sounds\heal.mp3" />
     <None Include="sounds\heal_recharge.mp3" />
     <None Include="sounds\hit.mp3" />
+    <None Include="sounds\game_over.mp3" />
     <Content Include="textures\health\1 - 5.png" />
     <Content Include="textures\health\11 - 15.png" />
     <Content Include="textures\health\16 - 20.png" />
