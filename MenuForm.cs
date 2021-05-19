@@ -48,7 +48,7 @@ namespace KeyboardSagaGame
             //Click Sound Player Creation
             clickSound = new WindowsMediaPlayer();
             clickSound.URL = clickSoundFile;
-            clickSound.settings.volume = 5;
+            clickSound.settings.volume = 10;
             clickSound.controls.stop();
             #endregion
             #region Font File Initialization

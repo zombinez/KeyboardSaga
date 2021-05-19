@@ -31,7 +31,7 @@ namespace KeyboardSagaGame.Classes
             {
                 case EntityType.SmallKnight:
                     ImgInfo = new ImageInfo(88, 76, 3);
-                    keysCount = 3 + game.Randomizer.Next(0, (game.CurrentWave - 3) / 6);
+                    keysCount = 3 + game.Randomizer.Next(0, (game.CurrentWave - 3) / 10);
                     Cycles = new MonsterCycles(16, 7, 10);
                     speed = game.Randomizer.Next(4, 6);
                     strength = 2;
@@ -39,7 +39,7 @@ namespace KeyboardSagaGame.Classes
                     break;
                 case EntityType.Slime:
                     ImgInfo = new ImageInfo(60, 64, 9);
-                    keysCount = 2 + game.Randomizer.Next(0, (game.CurrentWave - 3) / 4);
+                    keysCount = 2 + game.Randomizer.Next(0, (game.CurrentWave - 3) / 5);
                     Cycles = new MonsterCycles(11, 2, 6);
                     speed = game.Randomizer.Next(4, 8);
                     strength = 1;
@@ -48,7 +48,7 @@ namespace KeyboardSagaGame.Classes
                 case EntityType.King:
                     RequiredDistance += 100;
                     ImgInfo = new ImageInfo(88, 111, 3);
-                    keysCount = 15 + game.Randomizer.Next(0, (game.CurrentWave - 3) / 5);
+                    keysCount = 10 + game.CurrentWave - 3;
                     Cycles = new MonsterCycles(43, 6, 8);
                     speed = 2;
                     strength = 0;
