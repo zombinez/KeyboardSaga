@@ -75,7 +75,14 @@ namespace KeyboardSagaGame.Classes
                     keysCount = 15 + (game.CurrentWave - 3) / 2;
                     Cycles = new MonsterCycles(15, 5, 10);
                     speed = 2;
-                    attackAction = new Action<Game>((g) => g.PlayerTower.BeAttacked(10));
+                    attackAction = new Action<Game>((g) =>
+                    {
+                        g.MonsterToAdd.Enqueue(new Monster(EntityType.WitchDoctor, Coordinates 
+                            + new Vector(150, 100), g));
+                        g.MonsterToAdd.Enqueue(new Monster(EntityType.WitchDoctor, Coordinates 
+                            + new Vector(-150, 100), g));
+                        g.PlayerTower.BeAttacked(5);
+                    });
                     break;
             }
         }
