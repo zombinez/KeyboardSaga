@@ -403,6 +403,16 @@ namespace KeyboardSagaGame.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap igni {
+            get {
+                object obj = ResourceManager.GetObject("igni", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap J {
             get {
                 object obj = ResourceManager.GetObject("J", resourceCulture);

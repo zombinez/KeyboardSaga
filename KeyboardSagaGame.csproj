@@ -112,6 +112,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="textures\spritelists\igni.png" />
     <None Include="sounds\music.mp3" />
     <None Include="sounds\menu_select.mp3" />
     <None Include="sounds\heal.mp3" />

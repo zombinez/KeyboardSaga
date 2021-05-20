@@ -6,7 +6,8 @@
         SmallKnight = 1,
         Slime = 2,
         WitchDoctor = 3,
-        King = 4
+        King = 4,
+        Igni = 5
     }
 
     public enum MonsterAction

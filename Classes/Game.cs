@@ -46,8 +46,10 @@ namespace KeyboardSagaGame.Classes
             {
                 PlayerTower.ChangeHealState();
                 CurrentWave++;
-                if ((CurrentWave - 3) % 5 == 0 && CurrentWave > 0)
+                if ((CurrentWave - 3) % 5 == 0 && CurrentWave > 0 && (CurrentWave - 3) % 10 != 0)
                     Monsters.Add(new Monster(EntityType.King, GateCoordinates[1], this));
+                else if (CurrentWave > 0 && (CurrentWave - 3) % 10 == 0)
+                    Monsters.Add(new Monster(EntityType.Igni, GateCoordinates[1], this));
                 else
                     Monsters = this.CreateRandomMonstersAsync((CurrentWave - 3) / 5 + 1);
                 MonsterToAdd.Clear();
@@ -84,7 +86,7 @@ namespace KeyboardSagaGame.Classes
                     .Select(e => Task.Run(() =>
                     {
                         var randomMonsterEnum = 
-                            (EntityType)game.Randomizer.Next(1, Enum.GetNames(typeof(EntityType)).Length - 2);
+                            (EntityType)game.Randomizer.Next(1, Enum.GetNames(typeof(EntityType)).Length - 3);
                         return new Monster(randomMonsterEnum, game.GateCoordinates[i], game);
                     })).ToArray();
                 Task.WaitAll(tasks);
@@ -105,7 +107,8 @@ namespace KeyboardSagaGame.Classes
                 [EntityType.Slime] = GetImageByName("slime"),
                 [EntityType.Tower] = GetImageByName("tower"),
                 [EntityType.WitchDoctor] = GetImageByName("witch_doctor"),
-                [EntityType.King] = GetImageByName("king")
+                [EntityType.King] = GetImageByName("king"),
+                [EntityType.Igni] = GetImageByName("igni")
             };
 
         public static Dictionary<Keys, Image> GetKeys()

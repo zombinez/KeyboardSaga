@@ -312,14 +312,16 @@ namespace KeyboardSagaGame
 
         private void DrawMonster(PaintEventArgs e, Monster monster)
         {
+            var monsterX = (float)(coordinates.X + monster.Coordinates.X - monster.ImgInfo.ImgWidth / 2);
+            var monsterY = (float)(coordinates.Y + monster.Coordinates.Y);
             if (!monster.IsDead && !pauseGame)
                 e.Graphics.DrawImage(game.KeysImages[monster.CurrentKeyToPress],
-                    (float)(coordinates.X + monster.Coordinates.X - game.KeysImages[monster.CurrentKeyToPress].Width / 2 + 8),
-                    (float)(coordinates.Y + monster.Coordinates.Y - game.KeysImages[monster.CurrentKeyToPress].Height - 5),
+                    (float)(monsterX + monster.ImgInfo.ImgWidth / 9 + (monster.ImgInfo.ImgWidth - game.KeysImages[monster.CurrentKeyToPress].Width) / 2),
+                    (float)(monsterY - game.KeysImages[monster.CurrentKeyToPress].Height - 5),
                     game.KeysImages[monster.CurrentKeyToPress].Width, game.KeysImages[monster.CurrentKeyToPress].Height);
             e.Graphics.DrawImage(game.SpriteSheets[monster.Type],
-                (float)(coordinates.X + monster.Coordinates.X - monster.ImgInfo.ImgWidth / 2),
-                (float)(coordinates.Y + monster.Coordinates.Y), new Rectangle(
+                monsterX,
+                monsterY, new Rectangle(
                 new Point(monster.Frame * monster.ImgInfo.ImgWidth, (int)monster.CurrentAction * monster.ImgInfo.ImgHeight),
                 new Size(monster.ImgInfo.ImgWidth, monster.ImgInfo.ImgHeight)), GraphicsUnit.Pixel);
         }
