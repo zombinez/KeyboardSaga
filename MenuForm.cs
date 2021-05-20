@@ -12,13 +12,13 @@ namespace KeyboardSagaGame
     public partial class Menu : Form
     {
         public bool SoundOn { get; private set; }
-        public PrivateFontCollection PFC;
+        public PrivateFontCollection FontCollection;
         private readonly WindowsMediaPlayer music;
         private readonly WindowsMediaPlayer clickSound;
         private Image image;
         private Vector coordinates;
         private int animationCycles;
-        private KeyboardSaga GameForm;
+        private KeyboardSaga gameForm;
         private Tutorial tutorialForm;
         
         public Menu()
@@ -55,16 +55,15 @@ namespace KeyboardSagaGame
             string fontFile = Path.Combine(currentDirectory, @"fontFile.tmp");
             FileInitialize(fontFile, Properties.Resources.Main_Font);
             //Font Creation
-            PFC = new PrivateFontCollection();
-            PFC.AddFontFile(fontFile);
+            FontCollection = new PrivateFontCollection();
+            FontCollection.AddFontFile(fontFile);
             #endregion
             //Form Initialization
             InitializeComponent();
             Icon = Properties.Resources.logo;
             image = GameMethods.GetImageByName("menu_0");
             FormBorderStyle = FormBorderStyle.None;
-            AutoScaleDimensions = new SizeF(9F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.Dpi;
             AutoValidate = AutoValidate.Disable;
             Name = "KeyboardSaga";
             Text = "eyboardSaga";
@@ -106,8 +105,8 @@ namespace KeyboardSagaGame
             play.MouseClick += new MouseEventHandler((sender, args) =>
             {
                 PlayClickSound();
-                GameForm = new KeyboardSaga(this);
-                GameForm.Show();
+                gameForm = new KeyboardSaga(this);
+                gameForm.Show();
             });
             play.MouseEnter += new EventHandler((sender, args) => 
                 play.Image = GameMethods.GetImageByName("MENU_PLAY_ACTIVE"));

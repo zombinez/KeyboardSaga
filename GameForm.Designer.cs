@@ -7,6 +7,10 @@ namespace KeyboardSagaGame
     partial class KeyboardSaga
     {
         private System.ComponentModel.IContainer components = null;
+        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.PictureBox pause;
+        private System.Windows.Forms.PictureBox restart;
+        private System.Windows.Forms.PictureBox menu;
 
         protected override void Dispose(bool disposing)
         {
@@ -23,10 +27,5 @@ namespace KeyboardSagaGame
             this.SuspendLayout();
             this.ResumeLayout(false);
         }
-
-        private System.Windows.Forms.Timer timer;
-        private System.Windows.Forms.PictureBox pause;
-        private System.Windows.Forms.PictureBox restart;
-        private System.Windows.Forms.PictureBox menu;
     }
 }

@@ -35,8 +35,8 @@ namespace KeyboardSagaGame
             gameOverCycles = 0;
             mapImage = GameMethods.GetImageByName("0_");
             menuForm = menuF;
-            Font = new Font(menuForm.PFC.Families[0], 20F);
-            gameOverFont = new Font(menuForm.PFC.Families[0], 40F);
+            Font = new Font(menuForm.FontCollection.Families[0], 20F);
+            gameOverFont = new Font(menuForm.FontCollection.Families[0], 40F);
             game = new Game();
             pauseGame = false;
             gameOverSoundPlayed = false;
@@ -59,8 +59,7 @@ namespace KeyboardSagaGame
             gameOverSound.settings.volume = 100;
             gameOverSound.controls.stop();
             #endregion
-            AutoScaleDimensions = new SizeF(9F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.Dpi;
             AutoValidate = AutoValidate.Disable;
             DoubleBuffered = true;
             Name = "KeyboardSaga";
@@ -177,6 +176,7 @@ namespace KeyboardSagaGame
         {
             if (e.KeyCode == Keys.Escape)
             {
+                menuForm.PlayClickSound();
                 PausePress();
             }
             else if (e.KeyCode == Keys.Space && !game.IsGameFinished && game.PlayerTower.HealFrame == 7)
@@ -194,6 +194,11 @@ namespace KeyboardSagaGame
 
         private void OnFrameChanged(object sender, EventArgs e)
         {
+            if (menuForm.Enabled)
+            {
+                menuForm.Enabled = false;
+                menuForm.Hide();
+            }
             if (!game.IsGameFinished && !pauseGame && animationCycles > 39)
             {
                 game.DoGameCycle();
@@ -217,11 +222,6 @@ namespace KeyboardSagaGame
                 gameOverSoundPlayed = true;
             }
             Invalidate();
-            if (menuForm.Enabled)
-            {
-                menuForm.Enabled = false;
-                menuForm.Hide();
-            }
         }
 
         private void OnPaint(object sender, PaintEventArgs e)
@@ -293,7 +293,9 @@ namespace KeyboardSagaGame
                 (float)(coordinates.Y + game.PlayerTower.Coordinates.Y),
                 new Rectangle(new Point(game.PlayerTower.Frame * game.PlayerTower.ImgInfo.ImgWidth, 0),
                 new Size(game.PlayerTower.ImgInfo.ImgWidth, game.PlayerTower.ImgInfo.ImgHeight)), GraphicsUnit.Pixel);
-            var healCoordinates = new PointF((float)(coordinates.X + game.PlayerTower.Coordinates.X - game.PlayerTower.ImgInfo.ImgWidth / 2 - game.PlayerTower.HealImgInfo.ImgWidth - 15),
+            var healCoordinates = new PointF(
+                (float)(coordinates.X + game.PlayerTower.Coordinates.X 
+                    - game.PlayerTower.ImgInfo.ImgWidth / 2 - game.PlayerTower.HealImgInfo.ImgWidth - 15),
                 (float)(coordinates.Y + game.PlayerTower.Coordinates.Y + game.PlayerTower.ImgInfo.ImgHeight / 2));
             e.Graphics.DrawImage(game.PlayerTower.HealImage, healCoordinates.X, healCoordinates.Y,
                 new RectangleF(new PointF(game.PlayerTower.HealImgInfo.ImgWidth * game.PlayerTower.HealFrame, 0),
@@ -316,7 +318,8 @@ namespace KeyboardSagaGame
             var monsterY = (float)(coordinates.Y + monster.Coordinates.Y);
             if (!monster.IsDead && !pauseGame)
                 e.Graphics.DrawImage(game.KeysImages[monster.CurrentKeyToPress],
-                    (float)(monsterX + monster.ImgInfo.ImgWidth / 9 + (monster.ImgInfo.ImgWidth - game.KeysImages[monster.CurrentKeyToPress].Width) / 2),
+                    (float)(monsterX + monster.ImgInfo.ImgWidth / 9 + (monster.ImgInfo.ImgWidth 
+                        - game.KeysImages[monster.CurrentKeyToPress].Width) / 2),
                     (float)(monsterY - game.KeysImages[monster.CurrentKeyToPress].Height - 5),
                     game.KeysImages[monster.CurrentKeyToPress].Width, game.KeysImages[monster.CurrentKeyToPress].Height);
             e.Graphics.DrawImage(game.SpriteSheets[monster.Type],

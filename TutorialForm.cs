@@ -45,8 +45,7 @@ namespace KeyboardSagaGame
             pauseGame = false;
             animationCycles = 0;
             markAnimationCycles = 0;
-            AutoScaleDimensions = new SizeF(9F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.Dpi;
             AutoValidate = AutoValidate.Disable;
             DoubleBuffered = true;
             Name = "KeyboardSaga";
@@ -54,15 +53,21 @@ namespace KeyboardSagaGame
             FormBorderStyle = FormBorderStyle.None;
             WindowState = FormWindowState.Maximized;
             ClientSize = new Size(1280, 720);
-            coordinates = new Vector((ClientSize.Width - game.MapImage.Width) / 2, (ClientSize.Height - game.MapImage.Height) / 2);
+            coordinates = new Vector(
+                (ClientSize.Width - game.MapImage.Width) / 2, 
+                (ClientSize.Height - game.MapImage.Height) / 2);
             BackColor = Color.FromArgb(47, 40, 58);
             Paint += new PaintEventHandler(OnPaint);
             KeyDown += new KeyEventHandler(OnKeyPress);
             SizeChanged += new EventHandler((sender, args) =>
             {
-                coordinates = new Vector((ClientSize.Width - game.MapImage.Width) / 2, (ClientSize.Height - game.MapImage.Height) / 2);
+                coordinates = new Vector(
+                    (ClientSize.Width - game.MapImage.Width) / 2, 
+                    (ClientSize.Height - game.MapImage.Height) / 2);
                 pause.Location = new Point((int)(ClientSize.Width - pause.Image.Width - 30), 30);
-                menu.Location = menu.Location = new Point((int)(coordinates.X + game.MapImage.Width / 2 - menu.Image.Width / 2), (int)(ClientSize.Height / 2 - menu.Image.Height));
+                menu.Location = menu.Location = new Point(
+                    (int)(coordinates.X + game.MapImage.Width / 2 - menu.Image.Width / 2), 
+                    (int)(ClientSize.Height / 2 - menu.Image.Height));
                 Invalidate();
             });
             //Timer
@@ -77,7 +82,8 @@ namespace KeyboardSagaGame
             pause.Image = GameMethods.GetImageByName("PAUSE");
             pause.Size = new Size(pause.Image.Width, pause.Image.Height);
             pause.Location = new Point((int)(ClientSize.Width - pause.Image.Width - 40), 20);
-            pause.MouseUp += new MouseEventHandler((sender, args) => { if (!pauseGame) pause.Image = GameMethods.GetImageByName("PAUSE_ACTIVE"); });
+            pause.MouseUp += new MouseEventHandler((sender, args) => 
+            { if (!pauseGame) pause.Image = GameMethods.GetImageByName("PAUSE_ACTIVE"); });
             pause.MouseDown += new MouseEventHandler((sender, args) =>
             {
                 pause.Image = GameMethods.GetImageByName("PAUSE_PRESSED_ACTIVE");
@@ -85,9 +91,7 @@ namespace KeyboardSagaGame
             pause.MouseClick += new MouseEventHandler((sender, args) =>
             {
                 menuForm.PlayClickSound();
-                pauseGame = !pauseGame;
-                menu.Enabled = !menu.Enabled;
-                menu.Visible = !menu.Visible;
+                PausePress();
             });
             pause.MouseEnter += new EventHandler((sender, args) => { if (!pauseGame) pause.Image = GameMethods.GetImageByName("PAUSE_ACTIVE"); });
             pause.MouseLeave += new EventHandler((sender, args) => { if (!pauseGame) pause.Image = GameMethods.GetImageByName("PAUSE"); });
@@ -121,6 +125,11 @@ namespace KeyboardSagaGame
 
         private void OnFrameChanged(object sender, EventArgs e)
         {
+            if (menuForm.Enabled)
+            {
+                menuForm.Enabled = false;
+                menuForm.Hide();
+            }
             if (!game.IsGameFinished && !pauseGame && animationCycles > 39
                 && (!(game.PlayerTower.HealthAmount > 20 && game.PlayerTower.HealthAmount < 25)
                     || game.Monsters.TrueForAll(monster =>
@@ -130,18 +139,12 @@ namespace KeyboardSagaGame
             if (game.PlayerTower.LostHealth && menuForm.SoundOn)
                 hitSound.controls.play();
             Invalidate();
-            if (menuForm.Enabled)
-            {
-                menuForm.Enabled = false;
-                menuForm.Hide();
-            }
             if (game.Monsters.TrueForAll(monster => monster.Cycles.DeathCyclesDid >= 60))
             {
                 tutorialFinished = true;
                 if (animationCycles == 0)
                     menuForm.Open(this);
             }
-
         }
 
         private void OnKeyPress(object sender, KeyEventArgs e)
@@ -149,12 +152,7 @@ namespace KeyboardSagaGame
             if (e.KeyCode == Keys.Escape)
             {
                 menuForm.PlayClickSound();
-                pauseGame = !pauseGame;
-                if (pauseGame)
-                    pause.Image = GameMethods.GetImageByName("PAUSE_PRESSED_ACTIVE");
-                else pause.Image = GameMethods.GetImageByName("PAUSE");
-                menu.Enabled = !menu.Enabled;
-                menu.Visible = !menu.Visible;
+                PausePress();
             }
             else if (!tutorialFinished && !pauseGame)
             {
@@ -230,7 +228,8 @@ namespace KeyboardSagaGame
             if (game.PlayerTower.HealthAmount <= 40)
                 e.Graphics.DrawImage(exclamationMark,
                     (float)(coordinates.X + game.PlayerTower.Coordinates.X + game.PlayerTower.HealthImage.Width - 65),
-                    (float)(coordinates.Y + game.PlayerTower.Coordinates.Y + game.PlayerTower.ImgInfo.ImgHeight + 80 - exclamationMark.Height),
+                    (float)(coordinates.Y + game.PlayerTower.Coordinates.Y 
+                        + game.PlayerTower.ImgInfo.ImgHeight + 80 - exclamationMark.Height),
                     new Rectangle(new Point((markAnimationCycles / 10) * 22, 0), new Size(22, 32)), GraphicsUnit.Pixel);
         }
 
@@ -252,6 +251,16 @@ namespace KeyboardSagaGame
                 (float)(coordinates.Y + monster.Coordinates.Y), new Rectangle(
                 new Point(monster.Frame * monster.ImgInfo.ImgWidth, (int)monster.CurrentAction * monster.ImgInfo.ImgHeight),
                 new Size(monster.ImgInfo.ImgWidth, monster.ImgInfo.ImgHeight)), GraphicsUnit.Pixel);
+        }
+
+        private void PausePress()
+        {
+            pauseGame = !pauseGame;
+            if (pauseGame)
+                pause.Image = GameMethods.GetImageByName("PAUSE_PRESSED_ACTIVE");
+            else pause.Image = GameMethods.GetImageByName("PAUSE");
+            menu.Enabled = !menu.Enabled;
+            menu.Visible = !menu.Visible;
         }
     }
 }
