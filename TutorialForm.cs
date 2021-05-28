@@ -12,16 +12,16 @@ namespace KeyboardSagaGame
 {
     public partial class Tutorial : Form
     {
-        private Menu menuForm;
         private Image mapImage;
         private Vector coordinates;
         private int animationCycles;
+        private int markAnimationCycles;
         private bool pauseGame;
-        private Game game;
+        private bool tutorialFinished;
+        private readonly Menu menuForm;
+        private readonly Game game;
         private readonly Image arrow;
         private readonly Image exclamationMark;
-        private int markAnimationCycles;
-        private bool tutorialFinished;
         private readonly WindowsMediaPlayer hitSound;
         private bool awareCondition => game.Monsters.Any(monster => 
             MonsterMethods.GetCurrentDistance(monster.Coordinates, game.PlayerTower.Coordinates) < 250);
@@ -64,10 +64,10 @@ namespace KeyboardSagaGame
                 coordinates = new Vector(
                     (ClientSize.Width - game.MapImage.Width) / 2, 
                     (ClientSize.Height - game.MapImage.Height) / 2);
-                pause.Location = new Point((int)(ClientSize.Width - pause.Image.Width - 30), 30);
+                pause.Location = new Point((ClientSize.Width - pause.Image.Width - 30), 30);
                 menu.Location = menu.Location = new Point(
                     (int)(coordinates.X + game.MapImage.Width / 2 - menu.Image.Width / 2), 
-                    (int)(ClientSize.Height / 2 - menu.Image.Height));
+                    (ClientSize.Height / 2 - menu.Image.Height));
                 Invalidate();
             });
             //Timer
@@ -81,7 +81,7 @@ namespace KeyboardSagaGame
             pause = new PictureBox();
             pause.Image = GameMethods.GetImageByName("PAUSE");
             pause.Size = new Size(pause.Image.Width, pause.Image.Height);
-            pause.Location = new Point((int)(ClientSize.Width - pause.Image.Width - 40), 20);
+            pause.Location = new Point((ClientSize.Width - pause.Image.Width - 40), 20);
             pause.MouseUp += new MouseEventHandler((sender, args) => 
             { if (!pauseGame) pause.Image = GameMethods.GetImageByName("PAUSE_ACTIVE"); });
             pause.MouseDown += new MouseEventHandler((sender, args) =>
@@ -102,7 +102,7 @@ namespace KeyboardSagaGame
             menu = new PictureBox();
             menu.Image = GameMethods.GetImageByName("EXIT");
             menu.Size = new Size(menu.Image.Width, menu.Image.Height);
-            menu.Location = new Point((int)(coordinates.X + game.MapImage.Width / 2 - menu.Image.Width / 2), (int)(ClientSize.Height / 2 - menu.Image.Height));
+            menu.Location = new Point((int)(coordinates.X + game.MapImage.Width / 2 - menu.Image.Width / 2), (ClientSize.Height / 2 - menu.Image.Height));
             menu.MouseUp += new MouseEventHandler((sender, args) => menu.Image = GameMethods.GetImageByName("EXIT_ACTIVE"));
             menu.MouseDown += new MouseEventHandler((sender, args) =>
             {

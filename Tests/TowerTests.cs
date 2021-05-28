@@ -33,5 +33,37 @@ namespace KeyboardSagaGame.Tests
                     Assert.AreEqual(t.HealthAmount, 50 - i + 15);
             }
         }
+
+        [Test]
+        public void TowerChangesFrame()
+        {
+            var tower = new Tower(0, 0);
+            var towerFrame = tower.Frame;
+            for (var i = 0; i < 10; i++)
+                tower.ChangeState();
+            Assert.AreNotEqual(towerFrame, tower.Frame);
+        }
+
+        [Test]
+        public void TowerChangesHealFrame()
+        {
+            var tower = new Tower(0, 0);
+            var towerHealFrame = tower.HealFrame;
+            tower.ChangeHealState();
+            Assert.AreNotEqual(towerHealFrame, tower.HealFrame);
+        }
+
+        [Test]
+        public void HealAbilityDoesNotChangeWhenCharged()
+        {
+            var tower = new Tower(0, 0);
+            while (tower.HealFrame != 7)
+                tower.ChangeHealState();
+            for(var i = 0; i < 10; i++)
+            {
+                tower.ChangeHealState();
+                Assert.AreEqual(tower.HealFrame, 7);
+            }
+        }
     }
 }

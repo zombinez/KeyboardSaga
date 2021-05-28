@@ -67,5 +67,37 @@ namespace KeyboardSagaGame.Tests
             game.Monsters[0].GetKilled();
             Assert.IsTrue(game.Monsters[0].IsDead);
         }
+
+        [Test]
+        public void MonsterChangesFramesWhileWalking()
+        {
+            var game = new Game();
+            var monsterFrame = game.Monsters[0].Frame;
+            for (var i = 0; i < game.Monsters[0].Cycles.WalkInterval + 1; i++)
+                game.Monsters[0].Act(game);
+            Assert.AreNotEqual(monsterFrame, game.Monsters[0].Frame);
+        }
+
+        [Test]
+        public void MonsterChangesFrameWhileAttacking()
+        {
+            var game = new Game();
+            var monster = new Monster(EntityType.SmallKnight, game.PlayerTower.Coordinates, game);
+            var monsterFrame = monster.Frame;
+            for (var i = 0; i < monster.Cycles.AttackInterval + 1; i++)
+                monster.Act(game);
+            Assert.AreNotEqual(monsterFrame, monster.Frame);
+        }
+
+        [Test]
+        public void MonsterChangesFramesWhenDead()
+        {
+            var game = new Game();
+            var monsterFrame = game.Monsters[0].Frame;
+            game.Monsters[0].GetKilled();
+            for (var i = 0; i < game.Monsters[0].Cycles.DeathInterval + 1; i++)
+                game.Monsters[0].Act(game);
+            Assert.AreNotEqual(monsterFrame, game.Monsters[0].Frame);
+        }
     }
 }

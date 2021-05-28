@@ -11,16 +11,16 @@ namespace KeyboardSagaGame
 {
     public partial class Menu : Form
     {
-        public bool SoundOn { get; private set; }
-        public PrivateFontCollection FontCollection;
-        private readonly WindowsMediaPlayer music;
-        private readonly WindowsMediaPlayer clickSound;
         private Image image;
         private Vector coordinates;
-        private int animationCycles;
         private KeyboardSaga gameForm;
         private Tutorial tutorialForm;
-        
+        private int animationCycles;
+        public bool SoundOn { get; private set; }
+        public readonly PrivateFontCollection FontCollection;
+        private readonly WindowsMediaPlayer music;
+        private readonly WindowsMediaPlayer clickSound;
+
         public Menu()
         {
             SoundOn = true;
@@ -85,7 +85,7 @@ namespace KeyboardSagaGame
             });
             Paint += new PaintEventHandler(OnPaint);
             //Timer
-            timer = new System.Windows.Forms.Timer(components)
+            timer = new Timer(components)
             {
                 Enabled = true,
                 Interval = 150

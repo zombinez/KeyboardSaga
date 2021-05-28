@@ -13,10 +13,10 @@ namespace KeyboardSagaGame.Classes
         public int Frame { get; private set; }
         public bool IsDead => keysCount == 0;
         public readonly ImageInfo ImgInfo;
+        private readonly Action<Game> attackAction;
         public readonly EntityType Type;
         public readonly double RequiredDistance;
         private readonly double speed;
-        private readonly Action<Game> attackAction;
 
         public Monster(EntityType monsterType, Vector coordinates, Game game)
         {
