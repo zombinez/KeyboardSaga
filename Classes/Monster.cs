@@ -38,7 +38,7 @@ namespace KeyboardSagaGame.Classes
                 case EntityType.Slime:
                     ImgInfo = new ImageInfo(60, 64, 9);
                     keysCount = 2 + game.Randomizer.Next(0, (game.CurrentWave - 3) / 5);
-                    Cycles = new MonsterCycles(11, 2, 6);
+                    Cycles = new MonsterCycles(7, 2, 6);
                     speed = game.Randomizer.Next(4, 8);
                     attackAction = new Action<Game>((g) => g.PlayerTower.BeAttacked(1));
                     break;

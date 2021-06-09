@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Resources;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,7 +13,7 @@ namespace KeyboardSagaGame.Classes
         public List<Monster> Monsters { get; private set; }
         public int CurrentWave { get; private set; }
         public bool IsGameFinished { get; private set; }
-        public Random Randomizer { get; private set; }
+        public readonly Random Randomizer;
         public Queue<Monster> MonsterToAdd { get; private set; }
         public readonly Dictionary<EntityType, Image> SpriteSheets;
         public readonly Dictionary<Keys, Image> KeysImages;

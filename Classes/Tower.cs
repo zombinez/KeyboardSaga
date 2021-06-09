@@ -1,7 +1,4 @@
 ﻿using System.Drawing;
-using System.IO;
-using System.Reflection;
-using WMPLib;
 
 namespace KeyboardSagaGame.Classes
 {

@@ -1,16 +1,8 @@
-﻿using System.Drawing;
-using System.Drawing.Text;
-using System.IO;
-
-namespace KeyboardSagaGame
+﻿namespace KeyboardSagaGame
 {
     partial class KeyboardSaga
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.Timer timer;
-        private System.Windows.Forms.PictureBox pause;
-        private System.Windows.Forms.PictureBox restart;
-        private System.Windows.Forms.PictureBox menu;
 
         protected override void Dispose(bool disposing)
         {

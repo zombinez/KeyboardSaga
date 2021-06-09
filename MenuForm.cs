@@ -12,7 +12,7 @@ namespace KeyboardSagaGame
     public partial class Menu : Form
     {
         private Image image;
-        private Vector coordinates;
+        private Point coordinates;
         private KeyboardSaga gameForm;
         private Tutorial tutorialForm;
         private int animationCycles;
@@ -20,6 +20,11 @@ namespace KeyboardSagaGame
         public readonly PrivateFontCollection FontCollection;
         private readonly WindowsMediaPlayer music;
         private readonly WindowsMediaPlayer clickSound;
+        private readonly Timer timer;
+        private readonly PictureBox playButton;
+        private readonly PictureBox tutorialButton;
+        private readonly PictureBox exitButton;
+        private readonly PictureBox soundToggleButton;
 
         public Menu()
         {
@@ -71,16 +76,20 @@ namespace KeyboardSagaGame
             DoubleBuffered = true;
             ClientSize = new Size(1280, 720);
             BackColor = Color.FromArgb(47, 40, 58);
-            coordinates = new Vector((ClientSize.Width - image.Width) / 2, (ClientSize.Height - image.Height) / 2);
+            coordinates = new Point((ClientSize.Width - image.Width) / 2, (ClientSize.Height - image.Height) / 2);
             SizeChanged += new EventHandler((sender, args) =>
             {
-                coordinates = new Vector((ClientSize.Width - image.Width) / 2, (ClientSize.Height - image.Height) / 2);
-                play.Location = new Point((int)(coordinates.X + image.Width / 2 - play.Image.Width / 2), 
-                                          (int)(ClientSize.Height / 2 - play.Image.Height));
-                tutorial.Location = new Point(play.Location.X, play.Location.Y + 15 + play.Image.Height);
-                exit.Location = new Point(tutorial.Location.X, tutorial.Location.Y + 15 + tutorial.Image.Height);
-                soundToggle.Location = new Point((int)(coordinates.X + 41), 
-                                                 (int)(coordinates.Y + image.Height - 41 - soundToggle.Image.Height));
+                coordinates = new Point((ClientSize.Width - image.Width) / 2, (ClientSize.Height - image.Height) / 2);
+                playButton.Location = 
+                    new Point((coordinates.X + image.Width / 2 - playButton.Image.Width / 2), 
+                              (ClientSize.Height / 2 - playButton.Image.Height));
+                tutorialButton.Location = 
+                    new Point(playButton.Location.X, playButton.Location.Y + 15 + playButton.Image.Height);
+                exitButton.Location = 
+                    new Point(tutorialButton.Location.X, tutorialButton.Location.Y + 15 + tutorialButton.Image.Height);
+                soundToggleButton.Location = 
+                    new Point((coordinates.X + 41), 
+                              (coordinates.Y + image.Height - 41 - soundToggleButton.Image.Height));
                 Invalidate();
             });
             Paint += new PaintEventHandler(OnPaint);
@@ -88,89 +97,91 @@ namespace KeyboardSagaGame
             timer = new Timer(components)
             {
                 Enabled = true,
-                Interval = 150
+                Interval = 100
             };
             timer.Tick += new EventHandler(OnFrameChanged);
             animationCycles = 0;
             #region Play Button
-            play = new PictureBox();
-            play.Image = GameMethods.GetImageByName("MENU_PLAY");
-            play.Size = new Size(play.Image.Width, play.Image.Height);
-            play.Location = new Point((int)(coordinates.X + image.Width / 2 - play.Image.Width / 2), 
-                                      (int)(ClientSize.Height / 2 - play.Image.Height));
-            play.MouseUp += new MouseEventHandler((sender, args) => 
-                play.Image = GameMethods.GetImageByName("MENU_PLAY_ACTIVE"));
-            play.MouseDown += new MouseEventHandler((sender, args) =>
-                play.Image = GameMethods.GetImageByName("MENU_PLAY_PRESSED"));
-            play.MouseClick += new MouseEventHandler((sender, args) =>
+            playButton = new PictureBox();
+            playButton.Image = GameMethods.GetImageByName("MENU_PLAY");
+            playButton.Size = new Size(playButton.Image.Width, playButton.Image.Height);
+            playButton.Location = new Point((coordinates.X + image.Width / 2 - playButton.Image.Width / 2), 
+                                      (ClientSize.Height / 2 - playButton.Image.Height));
+            playButton.MouseUp += new MouseEventHandler((sender, args) => 
+                playButton.Image = GameMethods.GetImageByName("MENU_PLAY_ACTIVE"));
+            playButton.MouseDown += new MouseEventHandler((sender, args) =>
+                playButton.Image = GameMethods.GetImageByName("MENU_PLAY_PRESSED"));
+            playButton.MouseClick += new MouseEventHandler((sender, args) =>
             {
                 PlayClickSound();
                 gameForm = new KeyboardSaga(this);
                 gameForm.Show();
             });
-            play.MouseEnter += new EventHandler((sender, args) => 
-                play.Image = GameMethods.GetImageByName("MENU_PLAY_ACTIVE"));
-            play.MouseLeave += new EventHandler((sender, args) => 
-                play.Image = GameMethods.GetImageByName("MENU_PLAY"));
-            play.BackColor = Color.Transparent;
+            playButton.MouseEnter += new EventHandler((sender, args) => 
+                playButton.Image = GameMethods.GetImageByName("MENU_PLAY_ACTIVE"));
+            playButton.MouseLeave += new EventHandler((sender, args) => 
+                playButton.Image = GameMethods.GetImageByName("MENU_PLAY"));
+            playButton.BackColor = Color.Transparent;
             #endregion
-            Controls.Add(play);
+            Controls.Add(playButton);
             #region Tutorial Button
-            tutorial = new PictureBox();
-            tutorial.Image = GameMethods.GetImageByName("MENU_TUTORIAL");
-            tutorial.Size = new Size(tutorial.Image.Width, tutorial.Image.Height);
-            tutorial.Location = new Point(play.Location.X, play.Location.Y + 15 + play.Image.Height);
-            tutorial.MouseUp += new MouseEventHandler((sender, args) => 
-                tutorial.Image = GameMethods.GetImageByName("MENU_TUTORIAL_ACTIVE"));
-            tutorial.MouseDown += new MouseEventHandler((sender, args) =>
-                tutorial.Image = GameMethods.GetImageByName("MENU_TUTORIAL_PRESSED"));
-            tutorial.MouseClick += new MouseEventHandler((sender, args) =>
+            tutorialButton = new PictureBox();
+            tutorialButton.Image = GameMethods.GetImageByName("MENU_TUTORIAL");
+            tutorialButton.Size = new Size(tutorialButton.Image.Width, tutorialButton.Image.Height);
+            tutorialButton.Location = 
+                new Point(playButton.Location.X, playButton.Location.Y + 15 + playButton.Image.Height);
+            tutorialButton.MouseUp += new MouseEventHandler((sender, args) => 
+                tutorialButton.Image = GameMethods.GetImageByName("MENU_TUTORIAL_ACTIVE"));
+            tutorialButton.MouseDown += new MouseEventHandler((sender, args) =>
+                tutorialButton.Image = GameMethods.GetImageByName("MENU_TUTORIAL_PRESSED"));
+            tutorialButton.MouseClick += new MouseEventHandler((sender, args) =>
             {
                 PlayClickSound();
                 tutorialForm = new Tutorial(this);
                 tutorialForm.Show();
             });
-            tutorial.MouseEnter += new EventHandler((sender, args) => 
-                tutorial.Image = GameMethods.GetImageByName("MENU_TUTORIAL_ACTIVE"));
-            tutorial.MouseLeave += new EventHandler((sender, args) => 
-                tutorial.Image = GameMethods.GetImageByName("MENU_TUTORIAL"));
-            tutorial.BackColor = Color.Transparent;
+            tutorialButton.MouseEnter += new EventHandler((sender, args) => 
+                tutorialButton.Image = GameMethods.GetImageByName("MENU_TUTORIAL_ACTIVE"));
+            tutorialButton.MouseLeave += new EventHandler((sender, args) => 
+                tutorialButton.Image = GameMethods.GetImageByName("MENU_TUTORIAL"));
+            tutorialButton.BackColor = Color.Transparent;
             #endregion
-            Controls.Add(tutorial);
+            Controls.Add(tutorialButton);
             #region Exit Game Button
-            exit = new PictureBox();
-            exit.Image = GameMethods.GetImageByName("MENU_EXIT");
-            exit.Size = new Size(exit.Image.Width, exit.Image.Height);
-            exit.Location = new Point(tutorial.Location.X, tutorial.Location.Y + 15 + tutorial.Image.Height);
-            exit.MouseUp += new MouseEventHandler((sender, ars) => 
-                exit.Image = GameMethods.GetImageByName("MENU_EXIT_ACTIVE"));
-            exit.MouseDown += new MouseEventHandler((sender, args) =>
-                exit.Image = GameMethods.GetImageByName("MENU_EXIT_PRESSED"));
-            exit.MouseClick += new MouseEventHandler((sender, args) =>
+            exitButton = new PictureBox();
+            exitButton.Image = GameMethods.GetImageByName("MENU_EXIT");
+            exitButton.Size = new Size(exitButton.Image.Width, exitButton.Image.Height);
+            exitButton.Location = 
+                new Point(tutorialButton.Location.X, tutorialButton.Location.Y + 15 + tutorialButton.Image.Height);
+            exitButton.MouseUp += new MouseEventHandler((sender, ars) => 
+                exitButton.Image = GameMethods.GetImageByName("MENU_EXIT_ACTIVE"));
+            exitButton.MouseDown += new MouseEventHandler((sender, args) =>
+                exitButton.Image = GameMethods.GetImageByName("MENU_EXIT_PRESSED"));
+            exitButton.MouseClick += new MouseEventHandler((sender, args) =>
             {
                 Application.Exit();
             });
-            exit.MouseEnter += new EventHandler((sender, args) => 
-                exit.Image = GameMethods.GetImageByName("MENU_EXIT_ACTIVE"));
-            exit.MouseLeave += 
-                new EventHandler((sender, args) => exit.Image = GameMethods.GetImageByName("MENU_EXIT"));
-            exit.BackColor = Color.Transparent;
+            exitButton.MouseEnter += new EventHandler((sender, args) => 
+                exitButton.Image = GameMethods.GetImageByName("MENU_EXIT_ACTIVE"));
+            exitButton.MouseLeave += 
+                new EventHandler((sender, args) => exitButton.Image = GameMethods.GetImageByName("MENU_EXIT"));
+            exitButton.BackColor = Color.Transparent;
             #endregion
-            Controls.Add(exit);
+            Controls.Add(exitButton);
             #region Sound Toggle Button
-            soundToggle = new PictureBox();
-            soundToggle.Image = SoundOn ? GameMethods.GetImageByName("SOUND_ON") 
+            soundToggleButton = new PictureBox();
+            soundToggleButton.Image = SoundOn ? GameMethods.GetImageByName("SOUND_ON") 
                                         : GameMethods.GetImageByName("SOUND_OFF");
-            soundToggle.Size = new Size(soundToggle.Image.Width, soundToggle.Image.Height);
-            soundToggle.Location = new Point((int)(coordinates.X + 41), 
-                                             (int)(coordinates.Y + image.Height - 41 - soundToggle.Image.Height));
-            soundToggle.MouseUp += new MouseEventHandler((sender, args) =>
-                soundToggle.Image = SoundOn ? GameMethods.GetImageByName("SOUND_ON_ACTIVE") 
+            soundToggleButton.Size = new Size(soundToggleButton.Image.Width, soundToggleButton.Image.Height);
+            soundToggleButton.Location = new Point((coordinates.X + 41), 
+                                             (coordinates.Y + image.Height - 41 - soundToggleButton.Image.Height));
+            soundToggleButton.MouseUp += new MouseEventHandler((sender, args) =>
+                soundToggleButton.Image = SoundOn ? GameMethods.GetImageByName("SOUND_ON_ACTIVE") 
                                             : GameMethods.GetImageByName("SOUND_OFF_ACTIVE"));
-            soundToggle.MouseDown += new MouseEventHandler((sender, args) =>
-                soundToggle.Image = SoundOn ? GameMethods.GetImageByName("SOUND_ON_PRESSED")
+            soundToggleButton.MouseDown += new MouseEventHandler((sender, args) =>
+                soundToggleButton.Image = SoundOn ? GameMethods.GetImageByName("SOUND_ON_PRESSED")
                                             : GameMethods.GetImageByName("SOUND_OFF_PRESSED"));
-            soundToggle.MouseClick += new MouseEventHandler((sender, args) =>
+            soundToggleButton.MouseClick += new MouseEventHandler((sender, args) =>
             {
                 PlayClickSound();
                 SoundOn = !SoundOn;
@@ -178,29 +189,24 @@ namespace KeyboardSagaGame
                     music.controls.play();
                 else music.controls.pause();
             });
-            soundToggle.MouseEnter += new EventHandler((sender, args) =>
-                soundToggle.Image = SoundOn ? GameMethods.GetImageByName("SOUND_ON_ACTIVE")
+            soundToggleButton.MouseEnter += new EventHandler((sender, args) =>
+                soundToggleButton.Image = SoundOn ? GameMethods.GetImageByName("SOUND_ON_ACTIVE")
                                             : GameMethods.GetImageByName("SOUND_OFF_ACTIVE"));
-            soundToggle.MouseLeave += new EventHandler((sender, args) =>
-                soundToggle.Image = SoundOn ? GameMethods.GetImageByName("SOUND_ON")
+            soundToggleButton.MouseLeave += new EventHandler((sender, args) =>
+                soundToggleButton.Image = SoundOn ? GameMethods.GetImageByName("SOUND_ON")
                                             : GameMethods.GetImageByName("SOUND_OFF"));
-            soundToggle.BackColor = Color.Transparent;
+            soundToggleButton.BackColor = Color.Transparent;
             #endregion
-            Controls.Add(soundToggle);
+            Controls.Add(soundToggleButton);
             Invalidate();
         }
 
         private void OnFrameChanged(object sender, EventArgs e)
         {
-            Invalidate();
-        }
-
-        private void OnPaint(object sender, PaintEventArgs e)
-        {
-            if(animationCycles < 40)
+            if (animationCycles < 12)
             {
-                if (animationCycles % 10 == 0 && animationCycles != 0)
-                    image = GameMethods.GetImageByName($"menu_{animationCycles / 10}");
+                if (animationCycles % 3 == 0 && animationCycles != 0)
+                    image = GameMethods.GetImageByName($"menu_{animationCycles / 3}");
                 animationCycles++;
             }
             else
@@ -208,8 +214,11 @@ namespace KeyboardSagaGame
                 animationCycles = 0;
                 image = GameMethods.GetImageByName($"menu_0");
             }
-            e.Graphics.DrawImage(image, (float)coordinates.X, (float)coordinates.Y, image.Width, image.Height);
+            Invalidate();
         }
+
+        private void OnPaint(object sender, PaintEventArgs e) =>
+            e.Graphics.DrawImage(image, coordinates.X, coordinates.Y, image.Width, image.Height);
 
         public void Open(Form form)
         {
