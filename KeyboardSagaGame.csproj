@@ -37,8 +37,7 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=3.13.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
@@ -119,6 +118,7 @@
     <None Include="sounds\heal_recharge.mp3" />
     <None Include="sounds\hit.mp3" />
     <None Include="sounds\game_over.mp3" />
+    <Content Include="logo.ico" />
     <Content Include="textures\health\1 - 5.png" />
     <Content Include="textures\health\11 - 15.png" />
     <Content Include="textures\health\16 - 20.png" />
@@ -167,7 +167,6 @@
     <Content Include="textures\keys\X.png" />
     <Content Include="textures\keys\Y.png" />
     <Content Include="textures\keys\Z.png" />
-    <Content Include="textures\logo.ico" />
     <None Include="textures\map\0.png" />
     <None Include="textures\map\1.png" />
     <None Include="textures\map\2.png" />

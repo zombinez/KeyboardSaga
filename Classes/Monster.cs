@@ -31,15 +31,15 @@ namespace KeyboardSagaGame.Classes
                 case EntityType.SmallKnight:
                     ImgInfo = new ImageInfo(88, 76, 3);
                     keysCount = 3 + game.Randomizer.Next(0, (game.CurrentWave - 3) / 10);
-                    Cycles = new MonsterCycles(16, 7, 10);
-                    speed = game.Randomizer.Next(4, 6);
+                    Cycles = new MonsterCycles(16, 7, 15);
+                    speed = game.Randomizer.Next(5, 7);
                     attackAction = new Action<Game>((g) => g.PlayerTower.BeAttacked(2));
                     break;
                 case EntityType.Slime:
                     ImgInfo = new ImageInfo(60, 64, 9);
                     keysCount = 2 + game.Randomizer.Next(0, (game.CurrentWave - 3) / 5);
-                    Cycles = new MonsterCycles(7, 2, 6);
-                    speed = game.Randomizer.Next(4, 8);
+                    Cycles = new MonsterCycles(5, 2, 6);
+                    speed = game.Randomizer.Next(6, 9);
                     attackAction = new Action<Game>((g) => g.PlayerTower.BeAttacked(1));
                     break;
                 case EntityType.King:
@@ -47,7 +47,7 @@ namespace KeyboardSagaGame.Classes
                     ImgInfo = new ImageInfo(88, 111, 3);
                     keysCount = 10 + game.CurrentWave - 3;
                     Cycles = new MonsterCycles(43, 6, 8);
-                    speed = 2;
+                    speed = 3;
                     attackAction = new Action<Game>((g) =>
                     {
                         g.MonsterToAdd.Enqueue(new Monster(EntityType.SmallKnight, 
@@ -59,8 +59,8 @@ namespace KeyboardSagaGame.Classes
                 case EntityType.WitchDoctor:
                     ImgInfo = new ImageInfo(92, 108, 7);
                     keysCount = 1;
-                    Cycles = new MonsterCycles(5, 4, 5);
-                    speed = 10;
+                    Cycles = new MonsterCycles(3, 4, 5);
+                    speed = 12;
                     attackAction = new Action<Game>((g) =>
                     {
                         g.PlayerTower.BeAttacked(10);
